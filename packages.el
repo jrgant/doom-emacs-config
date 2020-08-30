@@ -9,12 +9,16 @@
 (package! helm-bibtex)
 (package! org-ref)
 (package! org-roam-bibtex)
+(package! gscholar-bibtex)
 
 ;; VISUALS
 (package! visual-fill-column)
 
 ;; GREP
 (package! wgrep)
+
+;; MESSAGING
+(package! slack)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
