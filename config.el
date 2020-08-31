@@ -93,3 +93,26 @@
   (setq org-directory "~/org/")
   (setq org-agenda-files '("~/org/" "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings/"))
   )
+
+;; References and citations
+(use-package! bibtex-mode
+  :defer true
+  :init
+  (setq bibtex-completion-bibliography '("~/bibliography/master-references.bib"))
+  (setq bibtex-completion-library-path '("~/bibliography/pdfs-main/"))
+  (setq bibtex-completion-notes-path "~/bibliography/notes/")
+  (setq bibtex-completion-additional-search-fields '(keywords))
+  (setq bibtex-completion-find-additional-pdfs t)
+  (setq bibtex-autokey-year-length 4
+        bibtex-autokey-name-case-convert-function 'capitalize
+        bibtex-autokey-name-year-separator ""
+        bibtex-autokey-year-title-separator "-"
+        bibtex-autokey-titlewords 1
+        bibtex-autokey-titleword-ignore '("[Ii]n" "[Oo]n" "[Aa]n" "[Dd]o" "[Tt]he" "[Oo]r" "[Ii]s" "[Ff]or" "[Aa]"))
+  )
+
+(use-package! org-ref
+  :after  helm-bibtex
+  :config
+  (setq org-ref-default-bibliography '("~/bibliography/master-references.bib"))
+  )
