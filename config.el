@@ -91,5 +91,5 @@
   ;; If you use `org' and don't want your org files in the default location below,
   ;; change `org-directory'. It must be set before org loads!
   (setq org-directory "~/org/")
-  (setq org-agenda-files '("~/org/" "C:/Users/jason/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings"))
+  (setq org-agenda-files '("~/org/" "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings/"))
   )
