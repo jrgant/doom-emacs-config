@@ -38,19 +38,12 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-monokai-pro)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
 ;; Start emacs in fullscreen mode.
 (toggle-frame-fullscreen)
-
-;; Set up Projectile search paths.
-(setq projectile-project-search-path '("~/Documents/Github" "~/Documents/Github/egcmsm"))
 
 ;; Remove delay for helm popups.
 (setq x-wait-for-event-timeout nil)
@@ -75,9 +68,28 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+;; Projectile settings
+(use-package! projectile
+  :defer true
+  :init
+  ;; Set up Projectile search paths.
+  (setq projectile-project-search-path '("~/Documents/Github" "~/Documents/Github/egcmsm"))
+  )
+
 ;; ESS settings for R.
 (use-package! ess
+  :defer true
   :init
   (setq inferior-ess-r-program "C:/Program Files/R/R-4.0.2/bin/R.exe")
   (setq ess-indent-with-fancy-comments nil)
+  )
+
+;; Org mode configuration.
+(use-package! org
+  :defer true
+  :init
+  ;; If you use `org' and don't want your org files in the default location below,
+  ;; change `org-directory'. It must be set before org loads!
+  (setq org-directory "~/org/")
+  (setq org-agenda-files '("~/org/" "C:/Users/jason/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings"))
   )
