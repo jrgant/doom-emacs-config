@@ -71,32 +71,31 @@
 ;; Projectile settings
 (use-package! projectile
   :defer true
+ 
   :init
   ;; Set up Projectile search paths.
   (setq projectile-project-search-path '("~/Documents/Github" "~/Documents/Github/egcmsm"))
   )
 
-;; ESS settings for R.
-(use-package! ess
-  :defer true
-  :init
-  (setq inferior-ess-r-program "C:/Program Files/R/R-4.0.2/bin/R.exe")
-  (setq ess-indent-with-fancy-comments nil)
-  )
-
 ;; Org mode configuration.
 (use-package! org
   :defer true
+
   :init
   ;; If you use `org' and don't want your org files in the default location below,
   ;; change `org-directory'. It must be set before org loads!
   (setq org-directory "~/org/")
-  (setq org-agenda-files '("~/org/" "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings/"))
+  (setq org-agenda-files
+        '("~/org/"
+          "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings/"
+          "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Project06_Sanofi-RSV/Meetings"))
   )
 
-;; References and citations
+;; REFERENCES AND CITATIONS
+;; Bibtex settings.
 (use-package! bibtex-mode
   :defer true
+
   :init
   (setq bibtex-completion-bibliography '("~/bibliography/master-references.bib"))
   (setq bibtex-completion-library-path '("~/bibliography/pdfs-main/"))
@@ -108,11 +107,37 @@
         bibtex-autokey-name-year-separator ""
         bibtex-autokey-year-title-separator "-"
         bibtex-autokey-titlewords 1
+        bibtex-autokey-titlewords-stretch 0
         bibtex-autokey-titleword-ignore '("[Ii]n" "[Oo]n" "[Aa]n" "[Dd]o" "[Tt]he" "[Oo]r" "[Ii]s" "[Ff]or" "[Aa]"))
   )
 
+;; Org-ref settings.
 (use-package! org-ref
   :after  helm-bibtex
+
   :config
   (setq org-ref-default-bibliography '("~/bibliography/master-references.bib"))
+  (setq org-ref-pdf-directory '("~/bibliography/pdfs-main/"))
   )
+
+;; STATISTICAL PROGRAMMING
+;; Jupyter REPL setup.
+(use-package! jupyter
+  :defer true
+
+  :init
+  (setq jupyter-repl-echo-eval-p t)
+
+  :config
+  (when (buffer-file-name "*.R") #'jupyter-repl-associate-buffer)
+  )
+
+;; ESS settings for R.
+(use-package! ess
+  :defer true
+
+  :init
+  (setq inferior-ess-r-program "C:/Program Files/R/R-4.0.2/bin/R.exe")
+  (setq ess-indent-with-fancy-comments nil)
+  )
+

@@ -1,9 +1,16 @@
 ;;; $DOOMDIR/keybindings.el -*- lexical-binding: t; -*-
 
-;; Global text manipulation
-(map! "C-c c" #'clipboard-kill-ring-save
+;; Globals
+(map! ;; text maninpulation
+      "C-c c" #'clipboard-kill-ring-save
       "C-c x" #'clipboard-kill-region
       "C-c v" #'clipboard-yank
+      ;; applications
+      :leader
+      (:prefix-map ("a" . "applications")
+       "h" #'helm-bibtex
+       "j" #'jupyter-run-repl
+       "s" #'slack-start)
       )
 
 ;; Global referen
@@ -23,6 +30,7 @@
 (map! :map bibtex-mode-map
        :localleader
        "c" #'org-ref-clean-bibtex-entry
-       "u" #'doi-utils-update-bibtex-entry-from-doi
+       "f" #'org-ref-bibtex-assoc-pdf-with-entry
        "s" #'bibtex-sort-buffer
+       "u" #'doi-utils-update-bibtex-entry-from-doi
        )
