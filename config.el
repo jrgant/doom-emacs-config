@@ -71,63 +71,121 @@
 ;; Projectile settings
 (use-package! projectile
   :defer true
- 
   :init
-  ;; Set up Projectile search paths.
   (setq projectile-project-search-path '("~/Documents/Github" "~/Documents/Github/egcmsm"))
   )
 
 ;; Org mode configuration.
 (use-package! org
   :defer true
-
   :init
   ;; If you use `org' and don't want your org files in the default location below,
   ;; change `org-directory'. It must be set before org loads!
-  (setq org-directory "~/org/")
-  (setq org-agenda-files
-        '("~/org/"
-          "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings/"
-          "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Project06_Sanofi-RSV/Meetings"))
+  (setq
+   org-directory "~/org/"
+   org-agenda-files '(
+     "~/org/"
+     "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings/"
+     "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Project06_Sanofi-RSV/Meetings"
+     )
+   )
   )
 
+
+
 ;; REFERENCES AND CITATIONS
+;; Lots of this configuration comes from https://rgoswami.me/posts/org-note-workflow
 ;; Bibtex settings.
 (use-package! bibtex-mode
   :defer true
-
   :init
-  (setq bibtex-completion-bibliography '("~/bibliography/master-references.bib"))
-  (setq bibtex-completion-library-path '("~/bibliography/pdfs-main/"))
-  (setq bibtex-completion-notes-path "~/bibliography/notes/")
-  (setq bibtex-completion-additional-search-fields '(keywords))
-  (setq bibtex-completion-find-additional-pdfs t)
-  (setq bibtex-autokey-year-length 4
-        bibtex-autokey-name-case-convert-function 'capitalize
-        bibtex-autokey-name-year-separator ""
-        bibtex-autokey-year-title-separator "-"
-        bibtex-autokey-titlewords 1
-        bibtex-autokey-titlewords-stretch 0
-        bibtex-autokey-titleword-ignore '("[Ii]n" "[Oo]n" "[Aa]n" "[Dd]o" "[Tt]he" "[Oo]r" "[Ii]s" "[Ff]or" "[Aa]"))
+  (setq
+   bibtex-completion-bibliography "~/bibliography/master-references.bib"
+   bibtex-completion-library-path "~/bibliography/pdfs-main/"
+   bibtex-completion-notes-path "~/bibliography/notes/"
+   bibtex-completion-additional-search-fields '(keywords)
+   bibtex-completion-find-additional-pdfs t
+   ;; citation key formatting
+   bibtex-autokey-year-length 4
+   bibtex-autokey-name-case-convert-function 'capitalize
+   bibtex-autokey-name-year-separator ""
+   bibtex-autokey-year-title-separator "-"
+   bibtex-autokey-titlewords 1
+   bibtex-autokey-titlewords-stretch 0
+   bibtex-autokey-titleword-ignore '("[Ii]n" "[Oo]n" "[Aa]n" "[Dd]o" "[Tt]he" "[Oo]r" "[Ii]s" "[Ff]or" "[Aa]")
+   ;; note template
+   bibtex-completion-notes-template-multiple-files
+   (concat
+    "#+TITLE: ${title}\n"
+    "#+ROAM_KEY: cite:${=key=}\n\n"
+    "- tags :: \n\n"
+    ":PROPERTIES:\n"
+    ":Custom_ID: ${=key=}\n"
+    ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+    ":AUTHOR: ${author-abbrev}\n"
+    ":JOURNAL: ${journaltitle}\n"
+    ":YEAR: ${year}\n"
+    ":DOI: ${doi}\n"
+    ":DIR: ./${=key=}\n"
+    ":END:\n\n"
+    )
+   )
   )
 
 ;; Org-ref settings.
 (use-package! org-ref
   :after  helm-bibtex
-
   :config
-  (setq org-ref-default-bibliography '("~/bibliography/master-references.bib"))
-  (setq org-ref-pdf-directory '("~/bibliography/pdfs-main/"))
+  (setq
+   org-ref-default-bibliography '("~/bibliography/master-references.bib")
+   org-ref-completion-library 'org-ref-helm-insert-cite-link
+   org-ref-pdf-directory '("~/bibliography/pdfs-main/")
+   org-ref-notes-directory "~/bibliography/notes/"
+   org-ref-notes-function 'orb-edit-notes
+   org-ref-notes-title-format ":PROPERTIES:\n :Custom_ID: %k\n :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n :AUTHOR: %9a\n :JOURNAL: %j\n :YEAR: %y\n :DOI: %D\n :DIR: ./${=key=}\n :END:\n\n"
+   )
   )
 
+;; Org-roam-bibtex.
+(use-package! org-roam-bibtex
+  :after org-roam
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :config
+  (setq orb-preformat-keywords '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
+  (setq orb-templates '(("r" "ref" plain (function org-roam-capture--get-point)
+           ""
+           :file-name "${slug}"
+           :head "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}\n
+- tags ::\n
+- keywords :: ${keywords}\n
+\n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n :AUTHOR: ${author-or-editor}\n :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n :NOTER_PAGE: \n :END:\n\n"
+           :unnarrowed t)))
+  )
+
+;; Org-noter configuration.
+(use-package! org-noter
+  :after (:any org pdf-view)
+  :config
+  (setq
+   ;; The WM can handle splits
+   org-noter-notes-window-location 'other-frame
+   ;; Please stop opening frames
+   org-noter-always-create-frame nil
+   ;; I want to see the whole file
+   org-noter-hide-other nil
+   ;; Everything is relative to the main notes file
+   org-noter-notes-search-path '("~/bibliography/notes/")
+   )
+  )
+
+ 
+ 
 ;; STATISTICAL PROGRAMMING
 ;; Jupyter REPL setup.
 (use-package! jupyter
   :defer true
-
   :init
   (setq jupyter-repl-echo-eval-p t)
-
   :config
   (when (buffer-file-name "*.R") #'jupyter-repl-associate-buffer)
   )
@@ -135,9 +193,9 @@
 ;; ESS settings for R.
 (use-package! ess
   :defer true
-
   :init
-  (setq inferior-ess-r-program "C:/Program Files/R/R-4.0.2/bin/R.exe")
-  (setq ess-indent-with-fancy-comments nil)
+  (setq
+   inferior-ess-r-program "C:/Program Files/R/R-4.0.2/bin/R.exe"
+   ess-indent-with-fancy-comments nil
+   )
   )
-

@@ -10,6 +10,8 @@
       (:prefix-map ("a" . "applications")
        "h" #'helm-bibtex
        "j" #'jupyter-run-repl
+       "l" #'helm-bibtex-with-local-bibliography
+       "n" #'helm-bibtex-with-notes
        "s" #'slack-start)
       )
 
