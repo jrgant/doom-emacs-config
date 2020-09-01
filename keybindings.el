@@ -1,7 +1,7 @@
 ;;; $DOOMDIR/keybindings.el -*- lexical-binding: t; -*-
 
 ;; Globals
-(map! ;; text maninpulation
+(map! ;; text manipulation
       "C-c c" #'clipboard-kill-ring-save
       "C-c x" #'clipboard-kill-region
       "C-c v" #'clipboard-yank
@@ -15,7 +15,7 @@
        "s" #'slack-start)
       )
 
-;; Global referen
+;; Global reference bindings
 (map! :leader
       ;;; <leader> r --- references
       (:prefix-map ("r" . "references")

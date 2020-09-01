@@ -48,8 +48,9 @@
 ;; Remove delay for helm popups.
 (setq x-wait-for-event-timeout nil)
 
-;; Load custom keybindings.
+;; Load custom keybindings and snippets.
 (load! "keybindings")
+(setq yas-snippet-dirs '("~/.doom.d/snippets/"))
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
