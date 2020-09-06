@@ -135,12 +135,12 @@
 
 ;; Org-ref settings.
 (use-package! org-ref
-  :after  helm-bibtex
+  :after  (:any org bibtex-mode helm-bibtex)
   :config
   (setq
    org-ref-default-bibliography '("~/bibliography/master-references.bib")
    org-ref-completion-library 'org-ref-helm-insert-cite-link
-   org-ref-pdf-directory '("~/bibliography/pdfs-main/")
+   org-ref-pdf-directory "~/bibliography/pdfs-main/"
    org-ref-notes-directory "~/bibliography/notes/"
    org-ref-notes-function 'orb-edit-notes
    org-ref-notes-title-format ":PROPERTIES:\n :Custom_ID: %k\n :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n :AUTHOR: %9a\n :JOURNAL: %j\n :YEAR: %y\n :DOI: %D\n :DIR: ./${=key=}\n :END:\n\n"
@@ -178,8 +178,6 @@
    org-noter-notes-search-path '("~/bibliography/notes/")
    )
   )
-
- 
  
 ;; STATISTICAL PROGRAMMING
 ;; Jupyter REPL setup.
