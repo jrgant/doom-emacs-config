@@ -206,3 +206,16 @@
    ess-indent-with-fancy-comments nil
    )
   )
+
+
+;; SLACK SETUP
+(use-package! slack
+  :defer true
+  :config
+  (slack-register-team
+   :name "Gorram Reavers"
+   :token (auth-source-pick-first-password
+           :host "gorram-reavers.slack.com"
+           :user "evilmammoth")
+   )
+  )
