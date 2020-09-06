@@ -20,7 +20,7 @@
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
 ;; font string. You generally only need these two:
 (setq doom-font (font-spec :family "Fira Code" :size 23)
-      doom-variable-pitch-font (font-spec :family "NimbusRomNo9L-Reg" :size 22))
+      doom-variable-pitch-font (font-spec :family "NimbusRomNo9L-Reg" :size 26))
 
 ;; Modeline tweaks.
 (display-battery-mode t)
@@ -28,7 +28,7 @@
 (display-time-mode t)
 
 ;; Set global defaults to control appearance and interaction with text.
-(setq-default line-spacing 6)
+(setq-default line-spacing 8)
 (global-visual-line-mode t)
 (+global-word-wrap-mode +2)
 (delete-selection-mode t)
