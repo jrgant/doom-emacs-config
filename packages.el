@@ -10,7 +10,8 @@
 (package! org-ref)
 (package! org-roam-bibtex)
 (package! gscholar-bibtex)
-(package! nov)
+(package! nov) ;; epub reader
+(package! pubmed)
 
 ;; VISUALS
 (package! visual-fill-column)
