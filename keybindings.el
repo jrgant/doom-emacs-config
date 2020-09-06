@@ -5,6 +5,7 @@
       "C-c c" #'clipboard-kill-ring-save
       "C-c x" #'clipboard-kill-region
       "C-c v" #'clipboard-yank
+      "C-c r" #'replace-regexp
       ;; applications
       :leader
       (:prefix-map ("a" . "applications")
