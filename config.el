@@ -189,6 +189,11 @@
   (when (buffer-file-name "*.R") #'jupyter-repl-associate-buffer)
   )
 
+;; temporary fix for freeze due to submitting large code blocks to repl
+;; h/t https://github.com/nnicandro/emacs-jupyter/issues/219#issue-569361931
+(add-hook 'jupyter-repl-mode-hook
+          (lambda () (font-lock-mode 0)))
+
 ;; ESS settings for R.
 (use-package! ess
   :defer true
