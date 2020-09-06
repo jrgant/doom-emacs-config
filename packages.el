@@ -10,6 +10,7 @@
 (package! org-ref)
 (package! org-roam-bibtex)
 (package! gscholar-bibtex)
+(package! nov)
 
 ;; VISUALS
 (package! visual-fill-column)
