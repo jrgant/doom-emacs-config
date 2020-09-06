@@ -52,6 +52,9 @@
 (load! "keybindings")
 (setq yas-snippet-dirs '("~/.doom.d/snippets/"))
 
+;; Bash fix.
+(setq shell-file-name "C:/cygwin64/bin/bash")
+
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one
