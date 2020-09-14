@@ -208,9 +208,16 @@
   )
 
 
+;; FILE NAVIGATION
+;; show dotfiles
+(add-hook! ranger-mode . (ranger-toggle-dotfiles))
+
+
 ;; SLACK SETUP
 (use-package! slack
   :defer true
+  :init
+  (setq slack-buffer-emojify t)
   :config
   (slack-register-team
    :name "Gorram Reavers"
