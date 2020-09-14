@@ -90,7 +90,7 @@
    org-agenda-files '(
      "~/org/"
      "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings/"
-     "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Project06_Sanofi-RSV/Meetings"
+     "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Project06_Sanofi-RSV/Meetings/"
      )
    )
   )
@@ -104,7 +104,7 @@
   :defer true
   :init
   (setq
-   bibtex-completion-bibliography "~/bibliography/master-references.bib"
+   bibtex-completion-bibliography "~/bibliography/master-blaster.bib"
    bibtex-completion-library-path "~/bibliography/pdfs-main/"
    bibtex-completion-notes-path "~/bibliography/notes/"
    bibtex-completion-additional-search-fields '(keywords)
@@ -134,45 +134,87 @@
     ":END:\n\n"
     )
    )
+   :config
+   (visual-fill-column-mode)
   )
 
 ;; Org-ref settings.
 (use-package! org-ref
-  :after  (:any org bibtex-mode helm-bibtex)
+  :after  (:any bibtex-mode helm-bibtex)
   :config
   (setq
-   org-ref-default-bibliography '("~/bibliography/master-references.bib")
+   org-ref-default-bibliography '("~/bibliography/master-blaster.bib")
    org-ref-completion-library 'org-ref-helm-insert-cite-link
+   org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
    org-ref-pdf-directory "~/bibliography/pdfs-main/"
    org-ref-notes-directory "~/bibliography/notes/"
    org-ref-notes-function 'orb-edit-notes
-   org-ref-notes-title-format ":PROPERTIES:\n :Custom_ID: %k\n :NOTER_DOCUMENT: %F\n :ROAM_KEY: cite:%k\n :AUTHOR: %9a\n :JOURNAL: %j\n :YEAR: %y\n :DOI: %D\n :DIR: ./${=key=}\n :END:\n\n"
+   org-ref-notes-title-format ":PROPERTIES:\n :Custom_ID: %k\n :NOTER_DOCUMENT: %F\n :AUTHOR: %9a\n :JOURNAL: %j\n :YEAR: %y\n :DOI: %D\n :DIR: ./${=key=}\n :ROAM_KEY: cite:%k\n :DIR: ./%k\n :END:\n\n"
    )
   )
+
+;; Org-roam settings
+(use-package! org-roam
+  :hook (org-load . org-roam-mode)
+  :commands (org-roam-buffer-toggle-display
+             org-roam-find-file
+             org-roam-graph
+             org-roam-insert
+             org-roam-switch-to-buffer
+             org-roam-dailies-date
+             org-roam-dailies-today
+             org-roam-dailies-tomorrow
+             org-roam-dailies-yesterday)
+  :preface
+  (defvar org-roam-directory nil)
+  :init
+  :config
+  (setq org-roam-directory "~/bibliography/notes"
+        org-roam-verbose nil
+        org-roam-buffer-no-delete-other-windows t
+        org-roam-completion-system 'default
+        )
+
+  ;; Normally, the org-roam buffer doesn't open until you explicitly call
+  ;; `org-roam'. If `+org-roam-open-buffer-on-find-file' is non-nil, the
+  ;; org-roam buffer will be opened for you when you use `org-roam-find-file'
+  ;; (but not `find-file', to limit the scope of this behavior).
+  (add-hook 'find-file-hook
+    (defun +org-roam-open-buffer-maybe-h ()
+      (and +org-roam-open-buffer-on-find-file
+           (memq 'org-roam-buffer--update-maybe post-command-hook)
+           (not (window-parameter nil 'window-side)) ; don't proc for popups
+           (not (eq 'visible (org-roam-buffer--visibility)))
+           (with-current-buffer (window-buffer)
+             (org-roam-buffer--get-create)))))
+
+  ;; Hide the mode line in the org-roam buffer, since it serves no purpose. This
+  ;; makes it easier to distinguish among other org buffers.
+  (add-hook 'org-roam-buffer-prepare-hook #'hide-mode-line-mode)
+)
 
 ;; Org-roam-bibtex.
 (use-package! org-roam-bibtex
   :after org-roam
   :hook (org-roam-mode . org-roam-bibtex-mode)
   :config
-  (setq orb-preformat-keywords '("=key=" "title" "url" "file" "author-or-editor" "keywords"))
+  (setq orb-preformat-keywords '("=key=" "title" "url" "file" "author-or-editor" "keywords" "author-abbrev" "journaltitle" "date" "doi"))
   (setq orb-templates '(("r" "ref" plain (function org-roam-capture--get-point)
            ""
            :file-name "${slug}"
            :head "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}\n
 - tags ::\n
-- keywords :: ${keywords}\n
-\n* ${title}\n  :PROPERTIES:\n  :Custom_ID: ${=key=}\n :AUTHOR: ${author-or-editor}\n :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n :NOTER_PAGE: \n :END:\n\n"
+\n* Notes\n :PROPERTIES:\n :Custom_ID: ${=key=}\n :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n :AUTHOR: ${author-or-editor}\n :JOURNAL: ${journaltitle}\n :DATE: ${date}\n :DOI: ${doi}\n :DIR: ./${=key=}\n :END:\n\n"
            :unnarrowed t)))
   )
 
 ;; Org-noter configuration.
 (use-package! org-noter
-  :after (:any org pdf-view)
+  :after pdf-view
   :config
   (setq
    ;; The WM can handle splits
-   org-noter-notes-window-location 'other-frame
+   org-noter-notes-window-location 'vertical-split
    ;; Please stop opening frames
    org-noter-always-create-frame nil
    ;; I want to see the whole file
