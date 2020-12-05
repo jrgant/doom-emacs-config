@@ -98,7 +98,8 @@
 (use-package! projectile
   :defer true
   :init
-  (setq projectile-project-search-path '("~/Documents/Github" "~/Documents/Github/egcmsm"))
+  (setq projectile-project-search-path '("~/Documents/Github"
+                                         "~/Documents/Github/egcmsm"))
   )
 
 ;; Org mode configuration.
