@@ -306,3 +306,16 @@
            :user "evilmammoth")
    )
   )
+
+;; MATH PREVIEWS
+;; code from maintainer: https://gitlab.com/matsievskiysv/math-preview/-/issues/1#note_461084074
+(use-package math-preview
+  :custom
+  (math-preview-marks '(("\\begin{equation}" . "\\end{equation}")
+                        ("\\begin{equation*}" . "\\end{equation*}")
+                        ("\\[" . "\\]")
+                        ("\\(" . "\\)")
+                        ("$$" . "$$")
+                        ("$" . "$")))
+  (math-preview-preprocess-functions '((lambda (s)
+                                         (concat "{\\color{white}" s "}")))))
