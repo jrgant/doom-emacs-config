@@ -9,10 +9,10 @@
       ;; applications
       :leader
       (:prefix-map ("a" . "applications")
-       "h" #'helm-bibtex
+       "h" #'ivy-bibtex
        "j" #'jupyter-run-repl
-       "l" #'helm-bibtex-with-local-bibliography
-       "n" #'helm-bibtex-with-notes
+       "l" #'ivy-bibtex-with-local-bibliography
+       "n" #'ivy-bibtex-with-notes
        "s" #'slack-start)
       )
 
