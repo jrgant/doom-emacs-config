@@ -279,11 +279,14 @@
   :defer true
   :init
   (setq
-   inferior-ess-r-program "C:/Program Files/R/R-4.0.2/bin/R.exe"
+   inferior-ess-r-program "C:/Program Files/R/R-4.0.3/bin/R.exe"
+   inferior-ess-r-help-command "utils::help(\"%s\", help_type=\"text\")\n"
    ess-indent-with-fancy-comments nil
    )
   )
 
+;; Use company-box-mode with lsp (lsp automatically loads company)
+(use-package! company-box-mode :hook (company-mode . company-box-mode))
 
 ;; FILE NAVIGATION
 ;; show dotfiles
