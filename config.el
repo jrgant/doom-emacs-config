@@ -237,7 +237,7 @@
   (setq orb-preformat-keywords '("=key=" "title" "url" "file" "author-or-editor" "keywords" "author-abbrev" "journaltitle" "date" "doi"))
   (setq orb-templates '(("r" "ref" plain (function org-roam-capture--get-point)
            ""
-           :file-name "${slug}"
+           :file-name "${=key=}"
            :head "#+TITLE: ${=key=}: ${title}\n#+ROAM_KEY: ${ref}\n
 - tags ::\n
 \n* Notes\n :PROPERTIES:\n :Custom_ID: ${=key=}\n :NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n :AUTHOR: ${author-or-editor}\n :JOURNAL: ${journaltitle}\n :DATE: ${date}\n :DOI: ${doi}\n :DIR: ./${=key=}\n :END:\n\n"
