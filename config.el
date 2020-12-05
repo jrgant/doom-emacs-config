@@ -67,6 +67,9 @@
 ;; Start emacs in fullscreen mode.
 (toggle-frame-fullscreen)
 
+;; Disable Image Magick rendering. Use Emacs 27.1 defaults.
+(setq imagemagick-enabled-types nil)
+
 ;; Remove delay for helm popups.
 (setq x-wait-for-event-timeout nil)
 
