@@ -32,6 +32,28 @@
 (global-visual-line-mode t)
 (+global-word-wrap-mode +2)
 (delete-selection-mode t)
+(setq auto-window-vscroll t)
+
+;; Use trash (instead of delete) as default delete mode.
+(setq delete-by-moving-to-trash t)
+
+;; Use posframe globally
+;; (helm-posframe-enable)
+;; (setq helm-posframe-parameters
+;;       '((left-fringe . 12)
+;;         (right-fringe . 12)))
+
+(use-package! ivy-posframe
+  :after ivy
+  :custom-face
+  (ivy-posframe-border ((t . (:background "#ffffff"))))
+  :config
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
+        ivy-posframe-parameters '((left-fringe . 12)
+                                  (right-fringe . 12)))
+  (ivy-posframe-mode 1)
+)
+
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the

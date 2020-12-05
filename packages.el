@@ -6,7 +6,8 @@
 ;; use 'M-x doom/reload'.
 
 ;; REFERENCES
-(package! helm-bibtex)
+;(package! helm-bibtex)
+(package! ivy-bibtex)
 (package! org-ref)
 (package! org-roam-bibtex)
 (package! gscholar-bibtex)
@@ -15,6 +16,16 @@
 
 ;; VISUALS
 (package! visual-fill-column)
+(package! company-box)
+(package! posframe)
+;(package! helm-posframe)
+(package! ivy-posframe)
+(package! company-posframe)
+(package! dired-posframe)
+
+;; MATH
+(package! math-preview
+  :recipe (:host gitlab :repo "matsievskiysv/math-preview"))
 
 ;; GREP
 (package! wgrep)
