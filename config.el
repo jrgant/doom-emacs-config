@@ -111,16 +111,27 @@
   :init
   ;; If you use `org' and don't want your org files in the default location below,
   ;; change `org-directory'. It must be set before org loads!
-  (setq
-   org-directory "~/org/"
-   org-agenda-files '(
-     "~/org/"
-     "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings/"
-     "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Project06_Sanofi-RSV/Meetings/"
-     )
-   )
-  )
+  (setq org-directory "~/org/")
+  (setq org-agenda-files '("~/jason/org/"
+                           "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Meetings/"
+                           "~/Google Drive/Brown/RA/RASST_2017-19_Howe-Zullo/Project06_Sanofi-RSV/Meetings/"
+                           ))
+  (setq org-latex-packages-alist
+        '("\\usepackage[T1]{fontenc}"
+          "\\usepackage{tikz}"
+          "\\usetikzlibrary{arrows,shapes,positioning}"
+          "\\usepackage{booktabs}"
+          "\\usepackage{tcolorbox}"
+          "\\tcbset{colback=red!5!white,colframe=red!75!black,fonttitle=\\bfseries}"
+          "\\usepackage[left=1in,top=1in,bottom=1in,right=1in]{geometry}"
+          ))
+  ;; org-babel will be ready for R
+  (setq org-babel-R-command "C:/Progra~1/R/R-4.0.3/bin/x64/R --slave --no-save")
 
+  (with-eval-after-load 'ox-latex
+    (setq org-latex-compiler "xelatex"
+          org-latex-pdf-process (list "latexmk -pdflatex='xelatex -shell-escape -synctex=1' -pdf -f %f")))
+  )
 
 
 ;; REFERENCES AND CITATIONS
@@ -129,54 +140,53 @@
 (use-package! bibtex-mode
   :defer true
   :init
-  (setq
-   bibtex-completion-bibliography "~/bibliography/master-blaster.bib"
-   bibtex-completion-library-path "~/bibliography/pdfs-main/"
-   bibtex-completion-notes-path "~/bibliography/notes/"
-   bibtex-completion-additional-search-fields '(keywords)
-   bibtex-completion-find-additional-pdfs t
-   ;; citation key formatting
-   bibtex-autokey-year-length 4
-   bibtex-autokey-name-case-convert-function 'capitalize
-   bibtex-autokey-name-year-separator ""
-   bibtex-autokey-year-title-separator "-"
-   bibtex-autokey-titlewords 1
-   bibtex-autokey-titlewords-stretch 0
-   bibtex-autokey-titleword-ignore '("[Ii]n" "[Oo]n" "[Aa]n" "[Dd]o" "[Tt]he" "[Oo]r" "[Ii]s" "[Ff]or" "[Aa]")
-   ;; note template
-   bibtex-completion-notes-template-multiple-files
-   (concat
-    "#+TITLE: ${title}\n"
-    "#+ROAM_KEY: cite:${=key=}\n\n"
-    "- tags :: \n\n"
-    ":PROPERTIES:\n"
-    ":Custom_ID: ${=key=}\n"
-    ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
-    ":AUTHOR: ${author-abbrev}\n"
-    ":JOURNAL: ${journaltitle}\n"
-    ":YEAR: ${year}\n"
-    ":DOI: ${doi}\n"
-    ":DIR: ./${=key=}\n"
-    ":END:\n\n"
-    )
-   )
-   :config
-   (visual-fill-column-mode)
+  (setq bibtex-completion-bibliography "~/bibliography/master-blaster.bib"
+        bibtex-completion-library-path "~/bibliography/pdfs-main/"
+        bibtex-completion-notes-path "~/bibliography/notes/"
+        bibtex-completion-additional-search-fields '(keywords)
+        bibtex-completion-find-additional-pdfs t
+        ;; citation key formatting
+        bibtex-autokey-year-length 4
+        bibtex-autokey-name-case-convert-function 'capitalize
+        bibtex-autokey-name-year-separator ""
+        bibtex-autokey-year-title-separator "-"
+        bibtex-autokey-titlewords 1
+        bibtex-autokey-titlewords-stretch 0
+        bibtex-autokey-titleword-ignore '("[Ii]n" "[Oo]n" "[Aa]n" "[Dd]o" "[Tt]he" "[Oo]r" "[Ii]s" "[Ff]or" "[Aa]")
+        ;; note template
+        bibtex-completion-notes-template-multiple-files
+        (concat
+         "#+TITLE: ${title}\n"
+         "#+ROAM_KEY: cite:${=key=}\n\n"
+         "- tags :: \n\n"
+         ":PROPERTIES:\n"
+         ":Custom_ID: ${=key=}\n"
+         ":NOTER_DOCUMENT: %(orb-process-file-field \"${=key=}\")\n"
+         ":AUTHOR: ${author-abbrev}\n"
+         ":JOURNAL: ${journaltitle}\n"
+         ":YEAR: ${year}\n"
+         ":DOI: ${doi}\n"
+         ":DIR: ./${=key=}\n"
+         ":END:\n\n"
+         )
+        )
+  :config
+  (visual-fill-column-mode)
   )
 
 ;; Org-ref settings.
 (use-package! org-ref
-  :after  (:any bibtex-mode helm-bibtex)
+  :after  (:any org bibtex-mode ivy-bibtex helm-bibtex)
   :config
-  (setq
-   org-ref-default-bibliography '("~/bibliography/master-blaster.bib")
-   org-ref-completion-library 'org-ref-helm-insert-cite-link
-   org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
-   org-ref-pdf-directory "~/bibliography/pdfs-main/"
-   org-ref-notes-directory "~/bibliography/notes/"
-   org-ref-notes-function 'orb-edit-notes
-   org-ref-notes-title-format ":PROPERTIES:\n :Custom_ID: %k\n :NOTER_DOCUMENT: %F\n :AUTHOR: %9a\n :JOURNAL: %j\n :YEAR: %y\n :DOI: %D\n :DIR: ./${=key=}\n :ROAM_KEY: cite:%k\n :DIR: ./%k\n :END:\n\n"
-   )
+  (setq org-ref-default-bibliography '("~/bibliography/master-blaster.bib")
+        ;org-ref-completion-library 'org-ref-helm-insert-cite-link
+        org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex
+        org-ref-completion-library 'org-ref-helm-cite
+        org-ref-pdf-directory "~/bibliography/pdfs-main/"
+        org-ref-notes-directory "~/bibliography/notes/"
+        org-ref-notes-function 'orb-edit-notes
+        bibtex-dialect 'biblatex
+        org-ref-notes-title-format ":PROPERTIES:\n :Custom_ID: %k\n :NOTER_DOCUMENT: %F\n :AUTHOR: %9a\n :JOURNAL: %j\n :YEAR: %y\n :DOI: %D\n :DIR: ./${=key=}\n :ROAM_KEY: cite:%k\n :DIR: ./%k\n :END:\n\n")
   )
 
 ;; Org-roam settings
